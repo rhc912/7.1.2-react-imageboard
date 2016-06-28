@@ -14,8 +14,11 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 h2{
   text-align: left;
 }
+body{
+  background-color: rgb(224,225,226)
+}
 img {
-  max-width: 42%;
+  
 
 }
 li{
@@ -31,7 +34,12 @@ li{
   }
 }
 .images{
-  margin-left: 364px;
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+}
+.picture-tile{
+  background-color: white;
 }
 .btn-primary{
   border-radius: 50%;
