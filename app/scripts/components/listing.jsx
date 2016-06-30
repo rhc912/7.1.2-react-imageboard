@@ -5,7 +5,13 @@ var $ = require('jquery');
 //
 var Feed = React.createClass({
   getInitialState: function(){
-    return {showForm: false};
+    return {showForm: false, url: '', caption: ''};
+  },
+  componentWillMount: function(){
+    this.props.collection.on('add', this.update);
+  },
+  update: function(){
+    this.forceUpdate();
   },
   handleClick: function(event){
     event.preventDefault();
@@ -13,6 +19,20 @@ var Feed = React.createClass({
     this.setState({showForm: !currentDisplay})
 
 
+  },
+  handleNewImage: function (e){
+    e.preventDefault();
+    console.log(this.state.caption);
+    this.props.collection.create({
+      'url': this.state.url,
+      'caption': this.state.caption
+    });
+  },
+  changeUrl: function(e){
+    this.setState({url: e.target.value})
+  },
+  changeCaption: function(e){
+    this.setState({caption: e.target.value})
   },
   render: function(){
     var textComponent = this.state.showForm;
@@ -27,7 +47,7 @@ var Feed = React.createClass({
         )
     });
 
-    var imageForm = this.state.showForm ? <ImageForm  /> : '';
+    var imageForm = this.state.showForm ? <ImageForm handleSubmit={this.handleNewImage} changeCaption={this.changeCaption} changeUrl={this.changeUrl} /> : '';
 
     return (
       <div>
@@ -52,13 +72,19 @@ var ImageForm = React.createClass({
       <form onSubmit={this.props.handleSubmit}>
         <div className="form-group">
           <label htmlFor="image-item">Add Image</label>
-          <input
-            onChange={this.props.handleChange}
-            type="text"
-            className="form-control"
-            id="image-item"
-            value={this.props.inputText}
-            placeholder="Add URL" />
+            <input  onChange={this.props.changeCaption}
+              type="text"
+              className="form-control"
+              id="image-item"
+              value={this.props.inputText}
+              placeholder="Add Title" />
+            <input
+              onChange={this.props.changeUrl}
+              type="text"
+              className="form-control"
+              id="image-item"
+              value={this.props.inputText}
+              placeholder="Add URL" />
         </div>
         <input type="submit" className="btn btn-success" value="Add"/>
       </form>
